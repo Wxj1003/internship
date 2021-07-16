@@ -27,6 +27,8 @@ public class UUserDTO implements Serializable {
 
     private Date updateTime;
 
+    private Long companyId = 21000L;
+
     public Long getId() {
         return id;
     }
@@ -65,5 +67,13 @@ public class UUserDTO implements Serializable {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Long getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
     }
 }

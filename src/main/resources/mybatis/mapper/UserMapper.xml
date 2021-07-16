@@ -8,9 +8,63 @@
         where id = #{id}
     </select>
 
-    <update id="update" parameterType="UUserDTO">
+    <update id="update">
         update u_user set update_time = now()
         where id = #{id}
     </update>
+
+    <update id="updateForMap">
+        update u_user set update_time = now()
+        where id = #{id}
+    </update>
+
+    <!--<update id="updateParam">
+        update u_user set password = #{password}, mobile = #{mobile}
+        where id = #{id}
+    </update>-->
+
+    <update id="updateParam">
+        update u_user set mobile = #{mobile}, password = #{password}
+        where id = #{id}
+    </update>
+
+    <insert id="add" useGeneratedKeys="true" keyProperty="id">
+        insert into u_user(mobile, password, is_deleted, company_id)
+        values
+        (#{mobile}, #{password}, 1, #{companyId})
+    </insert>
+
+    <insert id="batchAdd">
+        insert into u_user(mobile, password, is_deleted, company_id)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.mobile}, #{item.password}, 1, #{item.companyId})
+        </foreach>
+    </insert>
+
+    <select id="list" parameterType="UUserDTO" resultType="UUser">
+        select id, mobile, password, create_time, update_time
+        from u_user
+        <where>
+            <if test="id != null">
+                id = #{id}
+            </if>
+            <if test="mobile != null">
+                and mobile = #{mobile}
+            </if>
+        </where>
+    </select>
+
+    <!--<update id="updateSet">
+        update u_user
+        <set>
+            <if test="mobile != null">
+                mobile = #{mobile}
+            </if>
+            <if test="password != null">
+                , password = #{password}
+            </if>
+        </set>
+    </update>-->
 
 </mapper>

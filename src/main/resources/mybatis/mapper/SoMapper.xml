@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.odianyun.internship.mapper.SoMapper">
+    <select id="list" resultType="SoVO">
+        select id, order_code, user_id, user_name, merchant_id
+        from so
+        <where>
+            <if test="idList != null">
+                id in
+                <foreach collection="idList" item="id" open="(" close=")" separator=",">
+                    #{id}
+                </foreach>
+            </if>
+            <include refid="orderCodeParam"/>
+        </where>
+    </select>
+
+    <select id="get" resultType="SoVO">
+        select id, order_code, user_id, user_name, merchant_id
+        from so
+        <where>
+            <if test="id != null">
+                id = #{id}
+            </if>
+            <include refid="orderCodeParam"/>
+        </where>
+    </select>
+
+    <sql id="orderCodeParam">
+        <if test="orderCode != null">
+            and order_code = #{orderCode}
+        </if>
+    </sql>
+
+    <select id="choose" resultType="SoVO">
+        select id, order_code, user_id, user_name, merchant_id, order_status
+        from so
+        <where>
+            <choose>
+                <when test="orderStatus == 1">
+                    and order_status = 9000
+                </when>
+                <otherwise>
+                    and order_status in (1050, 1060)
+                </otherwise>
+            </choose>
+        </where>
+        limit 0, 10
+    </select>
+</mapper>

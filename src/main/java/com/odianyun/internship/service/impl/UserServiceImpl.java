@@ -4,10 +4,14 @@ import com.odianyun.internship.mapper.UserMapper;
 import com.odianyun.internship.model.DTO.UUserDTO;
 import com.odianyun.internship.model.UUser;
 import com.odianyun.internship.service.UserService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @description:
@@ -30,5 +34,39 @@ public class UserServiceImpl implements UserService {
     @Override
     public void update(UUserDTO dto) {
         userMapper.update(dto);
+    }
+
+    @Override
+    public void updateForMap(Map<String, Object> dto) {
+        userMapper.updateForMap(dto);
+    }
+
+    @Override
+    public void updateParam(UUserDTO dto) {
+        String password = dto.getPassword();
+        String mobile = dto.getMobile();
+        Long id = dto.getId();
+        userMapper.updateParam(password, mobile, id);
+    }
+
+    @Override
+    public UUser add(UUserDTO dto) {
+        UUser user = new UUser();
+        // 复制
+        BeanUtils.copyProperties(dto, user);
+
+        userMapper.add(user);
+
+        return user;
+    }
+
+    @Override
+    public List<UUser> list(UUserDTO dto) {
+        return userMapper.list(dto);
+    }
+
+    @Override
+    public void batchAdd(List<UUserDTO> dtoList) {
+        userMapper.batchAdd(dtoList);
     }
 }
